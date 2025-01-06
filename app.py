@@ -13,7 +13,9 @@ env = dotenv_values('.env')
 
 CHAT_PROMPT = "You are a helpful assistant that can answer questions and help with tasks. You are also a great listener and can provide emotional support."
 
-
+chat_history = [
+    {"role": "system", "content": CHAT_PROMPT + f"The user lives in San Fransisco, CA. The time zone is PST. The current time is: {datetime.now().strftime('%H:%M:%S')}"},
+]
 
 openai_client = OpenAI(
         api_key=env['OPENAI_API_KEY'],
@@ -85,17 +87,14 @@ async def process_speech(request: Request):
         
         if speech_result:
             print(f"Transcribed text: {speech_result}")
-            
+            chat_history.append({"role": "user", "content": speech_result})
             agent_message = openai_client.chat.completions.create(
                 model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": CHAT_PROMPT + f"The user lives in San Fransisco, CA. The time zone is PST. The current time is: {datetime.now().strftime('%H:%M:%S')}"},
-                    {"role": "user", "content": speech_result}
-                ]
+                messages=chat_history
             )
 
             print(f"Agent Message: {agent_message.choices[0].message.content}")
-
+            chat_history.append({"role": "assistant", "content": agent_message.choices[0].message.content})
             resp.say(agent_message.choices[0].message.content, voice='Polly.Amy')
             resp.redirect('/answer?response_bool=True')
         else:
