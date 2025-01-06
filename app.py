@@ -89,7 +89,7 @@ async def process_speech(request: Request):
             agent_message = openai_client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[
-                    {"role": "system", "content": CHAT_PROMPT + f"The current time is: {datetime.now().strftime('%H:%M:%S')}"},
+                    {"role": "system", "content": CHAT_PROMPT + f"The user lives in San Fransisco, CA. The time zone is PST. The current time is: {datetime.now().strftime('%H:%M:%S')}"},
                     {"role": "user", "content": speech_result}
                 ]
             )
