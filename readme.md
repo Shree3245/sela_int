@@ -52,5 +52,9 @@ This project implements a voice-based AI assistant using Twilio for voice handli
    ```
 
 3. Make sure your ngrok URL is set in the Twilio webhook settings.
+    - Go to [Twilio Console](https://console.twilio.com/)
+    - Navigate to [Phone Numbers](https://console.twilio.com/us1/develop/phone-numbers/manage/incoming)
+    - Click on your Twilio number
+    - Set the webhook URL to your ngrok URL + `/answer`
 
 4. Call the Twilio number and start interacting with your AI assistant!
